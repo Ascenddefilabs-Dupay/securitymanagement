@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 from .views import FetchQRCodeView, ProjectViewSet,CustomUserViewSet
 from .views import NotificationViewSet
 from .views import PasswordViewSet, RepasswordViewSet,  LogPassword, LogPasswordLock, GenerateOTP, verify_otp , RecreatePasscode
-from settings import views
+from password import views
 
 router = DefaultRouter()
 
