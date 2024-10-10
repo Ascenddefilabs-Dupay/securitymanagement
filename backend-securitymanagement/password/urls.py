@@ -1,14 +1,13 @@
 from django import views
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import FetchQRCodeView, ProjectViewSet,CustomUserViewSet
+
 from .views import NotificationViewSet
-from .views import PasswordViewSet, RepasswordViewSet,  LogPassword, LogPasswordLock, GenerateOTP, verify_otp , RecreatePasscode
+from .views import PasswordViewSet, RepasswordViewSet, LogPassword, LogPasswordLock, GenerateOTP, verify_otp , RecreatePasscode
 from password import views
 
 router = DefaultRouter()
 
-router.register(r'profile',CustomUserViewSet,basename="myProfile")
 router.register(r'notification', NotificationViewSet, basename='notification')
 router.register(r'password', PasswordViewSet, basename='password')
 router.register(r'repassword', RepasswordViewSet, basename='repassword')

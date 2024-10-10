@@ -5,23 +5,17 @@ from django.shortcuts import render
 from django.views import View
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from .models import Project,CustomUser
-from .serializers import FiatWalletSerializer, ProjectSerializer,CustomUserSerializer, UserSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from django.contrib.auth import login as auth_login
-from datetime import datetime, timedelta, timezone
 from .models import Notificationthings
 from .models import Password
 from .serializers import NotificationSerializer
 from .serializers import PasswordSerializer
 from django.http import JsonResponse
-from django.db import connection, models
-from .models import FiatWallet
+from django.db import connection
 from rest_framework.views import APIView
-from django.shortcuts import render
 from rest_framework import viewsets, status
-from .models import FiatWallet
 from rest_framework.views import APIView
 import bcrypt
 from django.core.mail import send_mail
@@ -29,6 +23,7 @@ import logging
 from django.conf import settings
 from django.core.cache import cache
 from django.utils.crypto import get_random_string
+
 
 
 class NotificationViewSet(viewsets.ModelViewSet):
@@ -349,10 +344,10 @@ class GenerateOTP(APIView):
             return Response({"message": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Fetch user from CustomUser
-        try:
-            user = CustomUser.objects.get(user_email=email)
-        except CustomUser.DoesNotExist:
-            return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        # try:
+        #     user = CustomUser.objects.get(user_email=email)
+        # except CustomUser.DoesNotExist:
+        #     return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
         # Generate OTP
         otp = get_random_string(length=6, allowed_chars='0123456789')

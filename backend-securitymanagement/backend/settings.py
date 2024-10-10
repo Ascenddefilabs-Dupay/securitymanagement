@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-@%49zh133jgxs+gj5eyra@+09e45pz+9ybp-4cni7ygfi%c_7m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['userauthorization-ind-255574993735.asia-south1.run.app']
+ALLOWED_HOSTS = ['securitymanagement-255574993735.asia-south1.run.app']
 ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['*']
 
@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    # 'userauthorization',
+    'password',
 ]
 
 MIDDLEWARE = [
@@ -161,3 +161,14 @@ CORS_ALLOW_HEADERS = [
 
 # Add this to allow credentials if needed
 CORS_ALLOW_CREDENTIALS = True
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = 'gtpldupay@gmail.com'
+EMAIL_HOST_PASSWORD = 'gsgd tqoj hicb qvtl'
+DEFAULT_FROM_EMAIL = 'gtpldupay@gmail.com'
