@@ -29,3 +29,4 @@ class Password(models.Model):
         db_table = 'app_password'
         managed = False
         
+
