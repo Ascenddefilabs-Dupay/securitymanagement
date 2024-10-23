@@ -98,6 +98,8 @@ class PasswordViewSet(viewsets.ModelViewSet):
                 'password_creation': hashed_password.decode('utf-8'),
             }
         )
+
+
         if not created:
             password_setting.password_creation = hashed_password.decode('utf-8')
             password_setting.save()
@@ -283,7 +285,7 @@ class LogPasswordLock(viewsets.ViewSet):
     def create(self, request):
         user_id = request.data.get('userId')
         id = user_id
-        logmain_password = request.data.get('logmain_password')  # The user input password
+        logmain_password = request.data.get('logmain_password')  
         
         print("Input password (raw):", logmain_password)
         
@@ -482,3 +484,84 @@ class RecreatePasscode(viewsets.ViewSet):
             return Response({'success': f'Passcode for {email} updated successfully'}, status=200)
         except Exception as e:
             return Response({'error': str(e)})
+        
+
+class WalletAddress(viewsets.ViewSet):
+    def list(self, request):
+        user_id = request.query_params.get('userId') 
+        data = request.data
+        print(data)
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM crypto_wallet_table")
+            rows = cursor.fetchall()
+        
+        user_id_list = []
+        sui_address = []
+        for i in rows:
+            user_id_list.append(i[5])
+            sui_address.append(i[-1])
+
+        print(user_id)
+
+        print(user_id_list)
+        print(sui_address)
+
+        index = 0
+
+        if user_id in user_id_list:
+            index = user_id_list.index(user_id)
+            
+        return JsonResponse({'status': f'{sui_address[index]}', 'message': 'Wallet Address'})
+
+class FiatAddress(viewsets.ViewSet):
+    def list(self, request):
+        user_id = request.query_params.get('userId') 
+        data = request.data
+        print(data)
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM fiat_wallet")
+            rows = cursor.fetchall()
+
+        user_id_fiat = []
+        fiat_address = []
+        for i in rows:
+            user_id_fiat.append(i[-1])
+            fiat_address.append(i[4])
+        index1 = 0
+
+        if user_id in user_id_fiat:
+            index1 = user_id_fiat.index(user_id)
+            
+        return JsonResponse({'status': f'{fiat_address[index1]}', 'message': 'Fiat Address'})
+
+
+class UnlockAddress(viewsets.ViewSet):
+    queryset = Password.objects.all()
+    serializer_class = PasswordSerializer
+    def create(self, request):
+        user_id = request.data.get('userId') 
+        unlock_password = request.data.get('unlock_password')
+        print(unlock_password, user_id)
+        
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM app_password")
+            rows = cursor.fetchall()
+
+        unlock_list = []
+        unloct_pass = []
+        for i in rows:
+            unlock_list.append(i[0])
+            unloct_pass.append(i[-1])
+
+        if user_id in unlock_list:
+            index1 = unlock_list.index(user_id)
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "UPDATE app_password SET unlock_password = %s WHERE id = %s",
+                    [unlock_password, user_id]  # Reusing hashed_password
+                )
+
+            return Response({"message": "Unlock Password created"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "User_id not found"})
+        
