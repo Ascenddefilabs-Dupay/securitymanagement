@@ -17,7 +17,7 @@ from django.db import connection
 from rest_framework.views import APIView
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
-import bcrypt
+# import bcrypt
 from django.core.mail import send_mail
 import logging
 from django.conf import settings
