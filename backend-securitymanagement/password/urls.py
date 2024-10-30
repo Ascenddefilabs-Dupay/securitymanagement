@@ -3,7 +3,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from .views import NotificationViewSet
-from .views import PasswordViewSet, RepasswordViewSet, LogPassword, LogPasswordLock, GenerateOTP, verify_otp, RecreatePasscode, WalletAddress, FiatAddress, UnlockAddress
+from .views import PasswordViewSet, RepasswordViewSet, LogPassword, LogPasswordLock, GenerateOTP, verify_otp, RecreatePasscode, WalletAddress, FiatAddress, UnlockAddress, DeleteFiatAddress, DeleteWalletAddress
 from password import views
 
 router = DefaultRouter()
@@ -18,6 +18,8 @@ router.register(r'recreatepasscode', RecreatePasscode, basename='recreatepasscod
 router.register(r'walletaddress', WalletAddress, basename='walletaddress')
 router.register(r'fiataddress', FiatAddress, basename='fiataddress')
 router.register(r'unlockpassword', UnlockAddress, basename='unlockpassword')
+router.register(r'deletewalletaddress', DeleteWalletAddress, basename='deletewalletaddress')
+router.register(r'deletefiataddress', DeleteFiatAddress, basename='deletefiataddress')
 
 
 
