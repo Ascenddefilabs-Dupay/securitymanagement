@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('api/',include('password.urls')),
      path('passwordapi/',include('password.urls')),
+     path('passwordchangeapi/', include('passwordchange.urls')),
 
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
