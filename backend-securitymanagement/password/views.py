@@ -17,7 +17,7 @@ from django.db import connection
 from rest_framework.views import APIView
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
-# import bcrypt
+import bcrypt
 from django.core.mail import send_mail
 import logging
 from django.conf import settings
@@ -565,3 +565,108 @@ class UnlockAddress(viewsets.ViewSet):
         else:
             return Response({"message": "User_id not found"})
         
+class DeleteWalletAddress(viewsets.ViewSet):
+    def list(self, request):
+        user_id = request.query_params.get('userId') 
+        data = request.data
+        print(data)
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM crypto_wallet_table")
+            rows = cursor.fetchall()
+        
+        user_id_list = []
+        sui_address = []
+        for i in rows:
+            user_id_list.append(i[5])
+            sui_address.append(i[-1])
+
+        print(user_id)
+
+        print(user_id_list)
+        print(sui_address)
+
+        index = 0
+
+        if user_id in user_id_list:
+            index = user_id_list.index(user_id)
+            
+            return JsonResponse({'status': f'{sui_address[index]}', 'message': 'Wallet Address'})
+        else:
+            return JsonResponse({'status': 'user_id not found'})
+    
+    def create(self, request):
+        user_id = request.data.get('userId') 
+        print(user_id)
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM crypto_wallet_table")
+            rows = cursor.fetchall()
+
+        user_id_list = []
+        sui_address = []
+        for i in rows:
+            user_id_list.append(i[5])
+            sui_address.append(i[-1])
+        index1 = 0
+        print(user_id, user_id_list)
+        print(user_id in user_id_list)
+        if user_id in user_id_list:
+            index1 = user_id_list.index(user_id)
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "DELETE FROM crypto_wallet_table WHERE user_id = %s",
+                    [user_id] 
+                )
+            
+            return JsonResponse({'status': 'Deleted', 'message': 'Deleted Successfully'},status=200)
+        else:
+            return JsonResponse({'status': 'error', 'message': 'user_id not found'},status=400)
+
+
+class DeleteFiatAddress(viewsets.ViewSet):
+    def list(self, request):
+        user_id = request.query_params.get('userId') 
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM fiat_wallet")
+            rows = cursor.fetchall()
+
+        user_id_fiat = []
+        fiat_address = []
+        for i in rows:
+            user_id_fiat.append(i[-1])
+            fiat_address.append(i[3])
+        index1 = 0
+
+        if user_id in user_id_fiat:
+            index2 = user_id_fiat.index(user_id)
+            
+            return JsonResponse({'status': f'{fiat_address[index2]}', 'message': 'Fiat Address'})
+        else:
+            return JsonResponse({'status': 'user_id not found'})
+        
+    def create(self, request):
+        user_id = request.data.get('userId') 
+        print(user_id)
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM fiat_wallet")
+            rows = cursor.fetchall()
+
+        user_id_fiat = []
+        fiat_address = []
+        
+        for i in rows:
+            user_id_fiat.append(i[-1])
+            fiat_address.append(i[3])
+        index1 = 0
+        print(user_id, user_id_fiat)
+        print(user_id in user_id_fiat)
+        if user_id in user_id_fiat:
+            index1 = user_id_fiat.index(user_id)
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "DELETE FROM fiat_wallet WHERE user_id = %s",
+                    [user_id] 
+                )
+            
+            return JsonResponse({'status': 'Deleted', 'message': 'Deleted Successfully'},status=200)
+        else:
+            return JsonResponse({'status': 'error', 'message': 'user_id not found'},status=400)
