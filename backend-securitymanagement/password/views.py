@@ -526,7 +526,7 @@ class FiatAddress(viewsets.ViewSet):
         fiat_address = []
         for i in rows:
             user_id_fiat.append(i[-1])
-            fiat_address.append(i[4])
+            fiat_address.append(i[3])
         index1 = 0
 
         if user_id in user_id_fiat:
