@@ -633,7 +633,6 @@ class DeleteFiatAddress(viewsets.ViewSet):
         fiat_address = []
         for i in rows:
             user_id_fiat.append(i[-1])
-            fiat_address.append(i[3])
         index1 = 0
 
         if user_id in user_id_fiat:
@@ -655,7 +654,6 @@ class DeleteFiatAddress(viewsets.ViewSet):
         
         for i in rows:
             user_id_fiat.append(i[-1])
-            fiat_address.append(i[3])
         index1 = 0
         print(user_id, user_id_fiat)
         print(user_id in user_id_fiat)
@@ -669,4 +667,4 @@ class DeleteFiatAddress(viewsets.ViewSet):
             
             return JsonResponse({'status': 'Deleted', 'message': 'Deleted Successfully'},status=200)
         else:
-            return JsonResponse({'status': 'error', 'message': 'user_id not found'},status=400)
+
