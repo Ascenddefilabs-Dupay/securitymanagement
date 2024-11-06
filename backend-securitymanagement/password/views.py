@@ -667,4 +667,4 @@ class DeleteFiatAddress(viewsets.ViewSet):
             
             return JsonResponse({'status': 'Deleted', 'message': 'Deleted Successfully'},status=200)
         else:
-
+            pass

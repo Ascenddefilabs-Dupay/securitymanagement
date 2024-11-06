@@ -12,9 +12,12 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+env = environ.Env() 
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -26,10 +29,8 @@ SECRET_KEY = 'django-insecure-@%49zh133jgxs+gj5eyra@+09e45pz+9ybp-4cni7ygfi%c_7m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['securitymanagement-255574993735.asia-south1.run.app','http://127.0.0.1:8000']
-ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['*']
 
+ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
@@ -83,7 +84,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django_cockroachdb',
-        'NAME': 'dupay',
+        'NAME': env('DB_NAME'),
         'USER': 'dupay',
         'PASSWORD': 'lPVRIuSyVCJqfmghd7ckBw',
         'HOST': 'chill-dibbler-5989.7s5.aws-ap-south-1.cockroachlabs.cloud',
@@ -139,8 +140,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://dupay.biz",
     "http://127.0.0.1:3000",
+    'https://dupay.biz',
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 
